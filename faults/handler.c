@@ -98,6 +98,9 @@ int main(void)
     // await a fault
     seq_msginfo = seL4_Recv(faulter_fault_ep_cap, &tmp_badge);
     printf(PROGNAME "Received a fault\n");
+    
+    // make sure it's from the badged faulter
+    assert(tmp_badge == FAULTER_BADGE_VALUE);
 
     // ASSUMPTION - this was a capability fault which was caused by accessing an empty cap
 
