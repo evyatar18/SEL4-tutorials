@@ -1,0 +1,6 @@
+*_build/
+.repo/
+projects/
+tools/
+init
+README-camkes.md
