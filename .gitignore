@@ -3,4 +3,5 @@
 projects/
 tools/
 init
+kernel/
 README-camkes.md
