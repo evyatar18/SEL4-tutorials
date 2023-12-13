@@ -64,8 +64,11 @@ int main(void) {
     
     /* TODO invoke irq_control to put the interrupt for TTC0_TIMER1_IRQ in
        cslot irq_handler (depth is seL4_WordBits) */
-    
+    error = seL4_IRQControl_Get(irq_control, TTC0_TIMER1_IRQ, cnode, irq_handler, seL4_WordBits);
+    ZF_LOGF_IF(error, "Failed to derive irq_handler capability");
      /* TODO set ntfn as the notification for irq_handler */
+    error = seL4_IRQHandler_SetNotification(irq_handler, ntfn);
+    ZF_LOGF_IF(error, "Failed to set ntfn as notification for irq_handler");
 
     /* set up the timer driver */
     int timer_err = timer_init(&timer_drv, DEFAULT_TIMER_ID, (void *) timer_vaddr);
@@ -78,26 +81,33 @@ int main(void) {
     error = seL4_IRQHandler_Ack(irq_handler);
     ZF_LOGF_IF(error, "Failed to ack irq");
 
-    timer_err = timer_set_timeout(&timer_drv, NS_IN_MS, true);
+    // timer timeout is measured in nanoseconds
+    uint64_t timer_timeout = NS_IN_MS * 500;
+
+    // round up frequency, using integer trick for rounding up
+    uint64_t timer_freq_seconds = (NS_IN_MS * 1000 + timer_timeout - 1) / timer_timeout;
+    
+    // multiplying the timer frequency with the number of seconds gives us the amount of ticks we need to wait
+    uint64_t tick_wait_count = timer_freq_seconds * msg;
+
+    timer_err = timer_set_timeout(&timer_drv, timer_timeout, true);
     ZF_LOGF_IF(timer_err, "Failed to set timeout");
 
     int count = 0;
-    while (1) {
+    printf("Go to sleep...\n");
+    while (count < tick_wait_count) {
         /* Handle the timer interrupt */
         seL4_Word badge;
         seL4_Wait(ntfn, &badge);
         timer_handle_irq(&timer_drv);
-        if (count == 0) {
-            printf("Tick\n");
-        }
+        printf("Tick\n");
         
         /* TODO ack the interrupt */
-
+        error = seL4_IRQHandler_Ack(irq_handler);
+        ZF_LOGF_IF(error, "Failed to ack irq");
         count++;
-        if (count == 1000 * msg) {
-            break;
-        }
     }
+    printf("Woke up after %d ticks\n", count);
 
     // stop the timer
     timer_stop(&timer_drv);
