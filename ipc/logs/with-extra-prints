@@ -1,0 +1,48 @@
+Booting all finished, dropped to user space                                                                                                                                            
+Client 2: waiting for badged endpoint                                                                                                                                                  
+Badged 2                                                                                                                                                                               
+Client 1: waiting for badged endpoint                                                                                                                                                  
+Badged 1                                                                                                                                                                               
+Client 2: received badged endpoint                                                                                                                                                     
+Copying msg length: 4299488, msg: the                                                                                                                                                  
+the                                                                                                                                                                                    
+Client 1: received badged endpoint
+Copying msg length: 4299488, msg: quick
+quick             
+Copying msg length: 4299488, msg: brown
+brown             
+Copying msg length: 4298512, msg: jumps
+Copying msg length: 4299488, msg: fox
+fox          
+jumps             
+Copying msg length: 4299488, msg: over
+over              
+Copying msg length: 4298512, msg: lazy
+Copying msg length: 4299488, msg: the
+the          
+lazy
+Copying msg length: 4299488, msg: dog
+dog
+Done: 2
+Caught cap fault in send phase at address 0
+while trying to handle:
+vm fault on data at address 0 with status 0x4
+in thread 0xffffff80083a2c00 "tcb_client_2" at address 0
+With stack:
+0x419ee8: 0x4075c8
+0x419ef0: 0x200419fb8
+0x419ef8: 0x3
+0x419f00: 0x419f40
+0x419f08: 0x407219
+0x419f10: 0x0
+0x419f18: 0x419fd8
+0x419f20: 0x419fd0
+0x419f28: 0x419fb8
+0x419f30: 0x2
+0x419f38: 0x401416
+0x419f40: 0x419f90
+0x419f48: 0x4071bb
+0x419f50: 0x0
+0x419f58: 0x419fb0
+0x419f60: 0x0
+Done: 1

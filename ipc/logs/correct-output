@@ -1,0 +1,18 @@
+Booting all finished, dropped to user space
+Client 2: waiting for badged endpoint
+Badged 2     
+Client 1: waiting for badged endpoint
+Badged 1          
+Client 2: received badged endpoint
+Client 1: received badged endpoint
+the               
+quick             
+brown             
+fox          
+jumps             
+over         
+the
+lazy
+Done: 1
+dog
+Done: 2
